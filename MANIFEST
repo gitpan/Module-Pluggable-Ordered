@@ -4,6 +4,9 @@ MANIFEST
 Ordered.pm
 README
 t/1.t
+t/2.t
+t/3.t
 t/modules/Foo/One.pm
 t/modules/Foo/Three.pm
 t/modules/Foo/Two.pm
+META.yml                                 Module meta-data (added by MakeMaker)

@@ -4,17 +4,33 @@ use strict;
 use warnings;
 require Module::Pluggable;
 use UNIVERSAL::require;
-our $VERSION = '1.0';
+our $VERSION = '1.1';
 
 sub import {
     my ($self, %args) = @_;
     my $subname = $args{sub_name} || "plugins";
+
+	my %only;
+	my %except;
+
+    %only   = map { $_ => 1 } @{$args{'only'}}    if defined $args{'only'};
+    %except = map { $_ => 1 } @{$args{'$except'}} if defined $args{'except'};
+
     my $caller = caller;
+	
     no strict; 
+
     *{"${caller}::call_plugins"} = sub {
         my ($thing, $name, @args)  = @_;
-        my @plugins = $thing->$subname();
+        my @plugins = ();
+        for ($thing->$subname()) {
+            next if (keys %only   && !$only{$_}   );
+            next if (keys %except &&  $except{$_} );
+            push @plugins, $_;
+        }
+            
         $_->require for @plugins;
+
         my $order_name = "${name}_order";
         for my $class (sort { $a->$order_name <=> $b->$order_name }
                        grep { $_->can($order_name) }
@@ -67,6 +83,17 @@ numerically based on the result of this method, and then calls
 C<$_-E<gt>my_method(@something)> on them in order. This produces an
 effect a little like the System V init process, where files can specify
 where in the init sequence they want to be called.
+
+=head1 OPTIONS
+
+It also provides the C<only> and C<except> options.
+
+     # will only return the Foo::Plugin::Quux plugin
+     use Module::Pluggable::Ordered only => [ "Foo::Plugin::Quux" ];
+
+     # will not return the Foo::Plugin::Quux plugin
+     use Module::Pluggable::Ordered except => [ "Foo::Plugin::Quux" ];
+
 
 =head1 SEE ALSO
 

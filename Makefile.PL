@@ -6,7 +6,7 @@ WriteMakefile(
     NAME              => 'Module::Pluggable::Ordered',
     VERSION_FROM      => 'Ordered.pm', # finds $VERSION
     PREREQ_PM         => {
-        Module::Pluggable => 1.2,
+        Module::Pluggable => 1.8,
         UNIVERSAL::require => 0
     }, # e.g., Module::Name => 1.1
 );

@@ -1,13 +1,26 @@
 Revision history for Perl extension Module::Pluggable::Ordered.
 
+1.4
+    - Fixed some nasty bugs in the POD that cropped up in 1.3. DOH! Thanks to 
+      Lars Thegler <lth@FreeBSD.org> for bringing my attention to the fact that 
+      1.3 was finally publically available on CPAN.
+    - Import some patches which originated in the FreeBSD ports system which fix
+      the module with old versions of Perl (for the most part; I don't want to
+      remove "use warnings" for obvious reasons).
+    - All publically released versions of Module-Pluggable-Ordered are now
+      available via the SVN repository. Feel free to browse around via the web
+      frontend. Tags are under the tags/ subdirectory, and include all public
+      releases. As an aside, if anyone has version 0.01, I'd greatly appreciate
+      being able to add it to the collection.
+
 1.3  
     - Now under maintainership by Christopher Nehren (note: previous revision
-      history iten written by Christopher Nehren).
-	- The latest code is now available via an SVN repository located at
-	  http{,s}://www.incunabulum.info/repos/Module-Pluggable-Ordered/ .
-	  Anonymous checkouts are allowed; write access will be granted based upon
-	  merit of submitted patches. Branches, tags (releases) and other items to
-	  follow.
+      history item written by Christopher Nehren).
+    - The latest code is now available via an SVN repository located at
+      http{,s}://www.incunabulum.info/repos/Module-Pluggable-Ordered/ .
+      Anonymous checkouts are allowed; write access will be granted based upon
+      merit of submitted patches. Branches, tags (releases) and other items to
+      follow.
 
 1.2   Sat Jul 17 2004
     - Added the package option.

@@ -1,10 +1,23 @@
 package Module::Pluggable::Ordered;
-use 5.006;
+# I really regret this ugliness, but it's needed in the face of backwards
+# compatibility, and I don't want "code this funky" wandering around CPAN
+# without warnings if I can help it. :) Those using ancient versions of Perl can
+# use -w for global warnings. Unfortunately, there's not much else I can do. If
+# anyone has any suggestions, please do file a bug report. Thanks.
+
+BEGIN 
+{
+	if($] >= 5.00600)
+	{
+		require warnings;
+		import warnings;
+	}
+}
 use strict;
-use warnings;
 require Module::Pluggable;
 use UNIVERSAL::require;
-our $VERSION = '1.3';
+use vars qw($VERSION);
+$VERSION = '1.4';
 
 sub import {
     my ($self, %args) = @_;
@@ -32,7 +45,7 @@ sub import {
         $_->require for @plugins;
 
         my $order_name = "${name}_order";
-        for my $class (sort { $a->$order_name <=> $b->$order_name }
+        for my $class (sort { $a->$order_name() <=> $b->$order_name() }
                        grep { $_->can($order_name) }
                        @plugins) {
             $class->$name(@args);
@@ -43,7 +56,6 @@ sub import {
 
 1;
 __END__
-# Below is stub documentation for your module. You'd better edit it!
 
 =head1 NAME
 
@@ -106,20 +118,27 @@ L<Module::Pluggable>, L<Class::Trigger>
 =head1 AUTHOR
 
 Simon Cozens, E<lt>simon@cpan.orgE<gt> (author emeritus)
+
 Christopher Nehren, E<lt>apeiron@cpan.orgE<gt> (current maintainer)
 
-Please report bugs via the CPAN RT tracker at 
-L<http://rt.cpan.org|http://rt.cpan.org>.
+Please report bugs via the CPAN RT tracker at http://rt.cpan.org.
 
 =head1 COPYRIGHT AND LICENSE
 
 Copyright 2004 by Simon Cozens
+
 Copyright 2004 by Christopher Nehren (current copyright holder)
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself. 
 
 =head1 ACKNOWLEDGEMENTS
+
 Thank you to Simon Cozens for originally writing this module.
+
+Thanks to Lars Thegler for indirectly alerting me to the fact that my POD was
+horribly broken, for providing patches to make this module work with Perl
+versions < 5.6, for maintaining the port up to version 1.3, and for allowing me
+to take maintainership for versions 1.3 onwards.
 
 =cut

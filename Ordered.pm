@@ -4,7 +4,7 @@ use strict;
 use warnings;
 require Module::Pluggable;
 use UNIVERSAL::require;
-our $VERSION = '1.1';
+our $VERSION = '1.2';
 
 sub import {
     my ($self, %args) = @_;
@@ -16,7 +16,7 @@ sub import {
     %only   = map { $_ => 1 } @{$args{'only'}}    if defined $args{'only'};
     %except = map { $_ => 1 } @{$args{'$except'}} if defined $args{'except'};
 
-    my $caller = caller;
+    my $caller = $args{package} || caller;
 	
     no strict; 
 
@@ -85,6 +85,10 @@ effect a little like the System V init process, where files can specify
 where in the init sequence they want to be called.
 
 =head1 OPTIONS
+
+The C<package> option can be used to put the pluggability into another
+package, to be used for modules building on the functionality of this
+one.
 
 It also provides the C<only> and C<except> options.
 

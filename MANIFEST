@@ -1,0 +1,9 @@
+Changes
+Makefile.PL
+MANIFEST
+Ordered.pm
+README
+t/1.t
+t/modules/Foo/One.pm
+t/modules/Foo/Three.pm
+t/modules/Foo/Two.pm

@@ -4,7 +4,7 @@ use strict;
 use warnings;
 require Module::Pluggable;
 use UNIVERSAL::require;
-our $VERSION = '1.2';
+our $VERSION = '1.3';
 
 sub import {
     my ($self, %args) = @_;
@@ -105,14 +105,21 @@ L<Module::Pluggable>, L<Class::Trigger>
 
 =head1 AUTHOR
 
-Simon Cozens, E<lt>simon@cpan.orgE<gt>; please report bugs via the
-CPAN Request Tracker.
+Simon Cozens, E<lt>simon@cpan.orgE<gt> (author emeritus)
+Christopher Nehren, E<lt>apeiron@cpan.orgE<gt> (current maintainer)
+
+Please report bugs via the CPAN RT tracker at 
+L<http://rt.cpan.org|http://rt.cpan.org>.
 
 =head1 COPYRIGHT AND LICENSE
 
 Copyright 2004 by Simon Cozens
+Copyright 2004 by Christopher Nehren (current copyright holder)
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself. 
+
+=head1 ACKNOWLEDGEMENTS
+Thank you to Simon Cozens for originally writing this module.
 
 =cut

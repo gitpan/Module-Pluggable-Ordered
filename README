@@ -37,13 +37,16 @@ DESCRIPTION
 SEE ALSO
     Module::Pluggable, Class::Trigger
 
-AUTHOR
-    Simon Cozens, <simon@cpan.org>; please report bugs via the CPAN Request
-    Tracker.
+AUTHORS
+    Simon Cozens, <simon@cpan.org> (author emeritus)
+    Christopher Nehren, <apeiron@cpan.org> (current maintainer)
 
 COPYRIGHT AND LICENSE
     Copyright 2004 by Simon Cozens
+    Copyright 2004 by Christopher Nehren (current copyright holder)
 
     This library is free software; you can redistribute it and/or modify it
     under the same terms as Perl itself.
 
+ACKNOWLEDGEMENTS
+	Thanks to Simon Cozens for originally writing this module.

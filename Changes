@@ -1,5 +1,18 @@
 Revision history for Perl extension Module::Pluggable::Ordered.
 
+1.5
+    - Mark Grimes <mgrimes@cpan.org> submitted a cool new feature implementing
+      the plugins_ordered() method. This allows plugins to be returned sorted
+      from the plugins() method. Note that this is a numeric sort using the <=>
+      operator. Possible future improvement: allowing a custom sort method. Not
+      sure how this would work; all plugins would have to agree to be sorted
+      this way, and the sort method would need to be passed by the code calling
+      the plugins to be registered properly.
+    - SVN had been broken for a long time. It's working again, albeit at a
+      different URL (albeit albeit on the same machine and in the same physical
+      location in the filesystem). You can snag the code from
+      http://www.coitusmentis.info/repos/Module-Pluggable-Ordered/ . 
+
 1.4
     - Fixed some nasty bugs in the POD that cropped up in 1.3. DOH! Thanks to 
       Lars Thegler <lth@FreeBSD.org> for bringing my attention to the fact that 

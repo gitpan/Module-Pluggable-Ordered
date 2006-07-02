@@ -17,7 +17,7 @@ use strict;
 require Module::Pluggable;
 use UNIVERSAL::require;
 use vars qw($VERSION);
-$VERSION = '1.4';
+$VERSION = '1.5';
 
 sub import {
     my ($self, %args) = @_;
@@ -51,6 +51,19 @@ sub import {
             $class->$name(@args);
         }
     };
+
+    *{"${caller}::${subname}_ordered"} = sub {
+        my $thing  = shift;
+
+		my @plugins = $thing->$subname();
+		$_->require for @plugins;
+
+		return	map  { $_->[0] }
+				sort { $a->[1] <=> $b->[1] }
+				map  { [ $_, ( $_->can('_order') ? $_->_order : 50 ) ] }
+				@plugins;
+	};
+		
     goto &Module::Pluggable::import;
 }
 
@@ -68,11 +81,17 @@ Module::Pluggable::Ordered - Call module plugins in a specified order
 
     Foo->call_plugins("some_event", @stuff);
 
+	for my $plugin (Foo->plugins()){
+		$plugin->method();
+	}
+
 Meanwhile, in a nearby module...
 
     package Foo::Plugin::One;
     sub some_event_order { 99 } # I get called last of all
     sub some_event { my ($self, @stuff) = @_; warn "Hello!" }
+
+	sub _order { 99 } # I get listed by plugins_ordered() last
 
 And in another:
 
@@ -80,12 +99,14 @@ And in another:
     sub some_event_order { 13 } # I get called relatively early
     sub some_event { ... }
 
+	sub _order { 10 } # I get listed by plugins_ordered() early
+
 =head1 DESCRIPTION
 
-This module behaves exactly the same as C<Module::Pluggable>, supporting
-all of its options, but also mixes in the C<call_plugins> method to your
-class. C<call_plugins> acts a little like C<Class::Trigger>; it takes the
-name of a method, and some parameters. Let's say we call it like so:
+This module behaves exactly the same as C<Module::Pluggable>, supporting all of
+its options, but also mixes in the C<call_plugins> and C<plugins_ordered>
+methods to your class. C<call_plugins> acts a little like C<Class::Trigger>; it
+takes the name of a method, and some parameters. Let's say we call it like so:
 
     __PACKAGE__->call_plugins("my_method", @something);
 
@@ -95,6 +116,16 @@ numerically based on the result of this method, and then calls
 C<$_-E<gt>my_method(@something)> on them in order. This produces an
 effect a little like the System V init process, where files can specify
 where in the init sequence they want to be called.
+
+C<plugins_ordered> extends the C<plugins> method created by
+C<Module::Pluggable> to list the plugins in defined order. It looks for
+a C<_order> method in the modules found using C<Module::Pluggable>, and
+returns the modules sorted numerically in that order. For example:
+
+	my @plugins = __PACKAGE__->plugins();
+
+The resulting array of plugins will be sorted. If no C<_order> subroutine
+is defined for a module, an arbitrary default value of 50 is used.
 
 =head1 OPTIONS
 
